@@ -13,22 +13,32 @@ class Vektor :
         return ((self.x - self.origox) ** 2 + (self.y - self.origoy) ** 2) **0.5
 
     def __add__(self, other):
-        return "A vektorok Összege: ({},{})".format(self.x + other.x,self.y + other.y)
+        if hasattr(other, 'x'):
+            return "A vektorok Összege: ({},{})".format(self.x + other.x,self.y + other.y)
+        if isinstance(other, int) or isinstance(other, float) :
+            return "A vektor hossza és a szám összege: {}".format(self.getHossz() + other)
 
-    def Hozzaad(self, szam):
-        return self.getHossz() + szam
+    def __radd__(self, other):
+        return self.__add__(other)
+
 
     def __sub__(self, other):
-        return "A vektorok különbsége: ({},{})".format(self.x - other.x, self.y - other.y)
+        if hasattr(other, 'x'):
+            return "A vektorok különbsége: ({},{})".format(self.x - other.x, self.y - other.y)
+        if isinstance(other, int) or isinstance(other, float):
+            return "A vektor hossza és a szám különbsége: {}".format(self.getHossz() - other)
 
-    def Kivon(self, szam):
-        return self.getHossz() - szam
+    def __rsub__(self, other):
+        return self.__sub__(other)
 
     def __mul__(self, other):
-        return "A vektorok szorzata: ({},{})".format(self.x * other.x, self.y * other.y)
+        if hasattr(other, 'x'):
+            return "A vektorok szorzatának összege: {}".format(self.x * other.x + self.y * other.y)
+        if isinstance(other, int) or isinstance(other, float):
+            return "A vektor szorzata {}-vel: ({},{})".format(other, self.x * other, self.y * other)
 
-    def Szorzas(self, szam):
-        return "A vektor szorzata {}-vel: ({},{})".format(szam, self.x * szam, self.y * szam)
+    def __rmul__(self, other):
+        return self.__mul__(other)
 
     def __lt__(self, other):
         return self.getHossz() < other.getHossz()
@@ -49,11 +59,11 @@ print(v2)
 print(v1.getHossz())
 print(v2.getHossz())
 print(v1+v2)
-print(v1.Hozzaad(2))
+print(2+v1)
 print(v1-v2)
-print(v1.Kivon(2))
+print(v1-2)
 print(v2*v1)
-print(v1.Szorzas(2))
+print(2*v1)
 print(v1>v2)
 print(v1<=v2)
 print(v1==v2)
